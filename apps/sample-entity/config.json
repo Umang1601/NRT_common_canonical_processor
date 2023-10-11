@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "app.kafkaBootstrapServers": "localhost:9092",
+    "app.kafkaAuthUsername": "",
+    "app.kafkaAuthPassword": "",
+    "app.kafkaSchemaRegistryUrl": "http://localhost:8081",
+    "app.kafkaSchemaRegistrySecret": "",
+    "app.kafkaApplicationId": "NRT-common-canonical-processor-app",
+    "app.processDuplicates": "false",
+    "app.mongodbUrl": "mongodb://localhost:27017",
+
+
+    "activeConfigurations": "CanonicalSampleEntity",
+
+    "CanonicalSampleEntity.topic": "sample.entity.processing.topic",
+    "CanonicalSampleEntity.collection": "Sample",
+    "CanonicalSampleEntity.mapper": "mapper/policy-mapper.yaml",
+    "CanonicalSampleEntity.keys": "_id",
+    "CanonicalSampleEntity.processor": "prama.ai.canonical.processor.DefaultProcessor",
+
+    "kafka.auto.offset.reset" :"earliest",
+    "kafka.enable.auto.commit" :"true",
+    "kafka.listener.concurrency" :"5",
+    "kafka.max.poll.records" :"100"
+
+
+  }
+}

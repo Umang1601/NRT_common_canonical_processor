@@ -1,5 +1,4 @@
-  //this needs to be updated based on what kind of data is being populated.
-  _id:
+ _id:
     concat:
       -policyReplace:
         - '~MERLN'

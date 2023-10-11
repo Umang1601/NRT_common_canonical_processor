@@ -2,6 +2,7 @@ package prama.ai.canonical.consumer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.micrometer.core.instrument.MeterRegistry;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class CanonicalEntityConsumer {
 
   //  private Map<String, Configuration> configurations = new HashMap<>();
 
     //@Value("${activeConfigurations}")
-    private String activeConfigurations = "SampleEntity";
+    private String activeConfigurations = "CanonicalSampleEntity";
 
     private static final String DOCUMENT_ID = "DOCUMENT_ID";
 

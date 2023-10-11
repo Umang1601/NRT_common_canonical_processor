@@ -16,6 +16,10 @@ public class MapValue<K, V> implements Transformation<Map<K, V>> {
         transformations.put(key, value);
     }
 
+    public MapValue(boolean allowNulls) {
+        this.allowNulls = allowNulls;
+    }
+
     @Override
     public Map<K, V> apply(Object source)
     {

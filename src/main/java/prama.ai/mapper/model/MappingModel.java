@@ -16,6 +16,12 @@ public class MappingModel {
 
     private static final ThreadLocal<Stack<String>> currentField = new ThreadLocal<>();
 
+    public MappingModel(String name, MapValue<String, Object> variables, MapValue<String, Object> transformation) {
+        this.name = name;
+        this.variables = variables;
+        this.transformation = transformation;
+    }
+
     public static void clearField(String string) {
         // clear string when exception occurs. Not required now
     }

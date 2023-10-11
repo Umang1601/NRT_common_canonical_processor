@@ -2,6 +2,7 @@ package prama.ai.canonical.service;
 
 
 import io.micrometer.core.annotation.Timed;
+import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,11 +10,14 @@ import org.springframework.data.mongodb.core.FindAndReplaceOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Log4j2
 public class MongoDbClientService {
 
     @Autowired
