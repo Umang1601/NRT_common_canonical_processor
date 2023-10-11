@@ -1,0 +1,16 @@
+  //this needs to be updated based on what kind of data is being populated.
+  _id:
+    concat:
+      -policyReplace:
+        - '~MERLN'
+  policyId:
+    concat:
+      -policyReplace:
+      -policyReplace:
+  generation:
+    trim:
+  revisonStartDate:
+    date:
+      value:
+      format: 'yyyyMMdd'
+
