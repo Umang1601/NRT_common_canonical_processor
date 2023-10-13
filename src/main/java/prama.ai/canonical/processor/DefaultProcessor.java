@@ -30,6 +30,7 @@ public class DefaultProcessor {
 
     public void process(ProcessorConfig config, Map<String, Object> raw, String collection) {
 
+        System.out.println("In process method, collection is %s" + collection);
         Map<String, Object> canonical = createCanonical(config,raw);
 
         save(config, canonical, collection);
@@ -37,12 +38,16 @@ public class DefaultProcessor {
 
     private Map<String, Object> createCanonical(ProcessorConfig config, Map<String, Object> raw)
     {
-        Map<String, Object> canonical = config.getModel().performMapping(raw); // create mapper here;
+        System.out.println("In canonical method, received raw data %s " +raw);
+        Map<String, Object> canonical = config.getModel().performMapping(raw);
+        System.out.println("in Canonical method, received canonical %s" +canonical);
+// create mapper here;
         return canonical;
     }
 
     private Map<String, Object> save(ProcessorConfig config, Map<String, Object> canonical, String collection)
     {
+        System.out.println("in save method, received canonical %s" +canonical);
         Map<String, Object> keyMap = getKeyMap(config, canonical);
 
         // not required as we are not doing versioning.

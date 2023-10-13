@@ -1,15 +1,18 @@
- _id:
+_id:
+    trim: $GR_KEY
+policyId:
     concat:
-      -policyReplace:
-        - '~MERLN'
-  policyId:
-    concat:
-      -policyReplace:
-      -policyReplace:
-  generation:
-    trim:
-  revisonStartDate:
-    date:
-      value:
-      format: 'yyyyMMdd'
+      - policyReplace: $GR_GR_ID_PFX
+      - policyReplace: $GR_GR_ID_SFX
+generation:
+    trim: $GR_REC_ID
+revisionStartDate:
+  date:
+    value: $GR_EFF_DT
+    format: 'yyyyMMdd'
+revisionEndDate:
+  date:
+    value: $GR_LIMIT_DT
+    format: 'yyyyMMdd'
+
 

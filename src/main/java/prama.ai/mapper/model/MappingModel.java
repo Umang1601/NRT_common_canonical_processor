@@ -32,6 +32,7 @@ public class MappingModel {
 
     public Map<String, Object> performMapping(Map<String, Object> raw)
     {
+        System.out.println("In performMaping method");
         reset();
         currentField.set(new Stack<>());
 
@@ -40,9 +41,12 @@ public class MappingModel {
         Map<String, Object> intermediateMap = new LinkedHashMap<>();
         intermediateMap.putAll(raw);
 
+        System.out.println("intermediateMap is updated %s" + intermediateMap);
+
         if(variables!=null)
         {
             intermediateMap.putAll(variables.apply(raw));
+            System.out.println(" variables are not null, intemediateapp %s " + intermediateMap);
         }
 
         return transformation.apply(intermediateMap);

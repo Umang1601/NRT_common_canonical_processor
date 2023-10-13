@@ -23,6 +23,7 @@ public class MapValue<K, V> implements Transformation<Map<K, V>> {
     @Override
     public Map<K, V> apply(Object source)
     {
+        System.out.println("In apply method, for transformation");
         Map<K, V> result = new LinkedHashMap<>();
 
         for(Map.Entry<Transformation<K>, Transformation<V>> en : transformations.entrySet())
@@ -47,5 +48,16 @@ public class MapValue<K, V> implements Transformation<Map<K, V>> {
 
         return result;
     }
+
+    public Map<K, Transformation<V>> getIntermediateMap(Object source) {
+
+        Map<K, Transformation<V>> map = new LinkedHashMap<>();
+        for (Map.Entry<Transformation<K>, Transformation<V>> entry : transformations.entrySet()) {
+            Transformation<K> key = entry.getKey();
+            map.put(key.apply(source), entry.getValue());
+        }
+        return map;
+    }
+
 }
 

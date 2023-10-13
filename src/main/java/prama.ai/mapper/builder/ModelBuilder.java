@@ -3,13 +3,13 @@ package prama.ai.mapper.builder;
 import org.yaml.snakeyaml.Yaml;
 import prama.ai.mapper.annotation.Transformer;
 import prama.ai.mapper.model.MappingModel;
-import prama.ai.mapper.transformations.MapValue;
-import prama.ai.mapper.transformations.Transformation;
+import prama.ai.mapper.transformations.*;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ public class ModelBuilder {
     private static final Map<String, Class<Transformation>> transformers = new HashMap<>();
     static
     {
-        initTransformers("com.unum.mapper", Transformer.class);
+        initTransformers("prama.ai.mapper", Transformer.class);
     }
 
     private final String name;
@@ -76,15 +76,29 @@ public class ModelBuilder {
                     System.out.println("Transformer instance is null ");
                 }
             } else if (str.startsWith("$")) {
-                System.out.println("provide mapper, currently there is none");
+                System.out.println("FromPath method");
+                return new FromPath<>(str);
             }
-            System.out.println("provide mapper, currently there is none");
+            System.out.println("constant method");
+            return new Constant<>(val);
+
         } else if (val instanceof Map) {
             return createModelFromMap((Map<?,?>) val);
-            
+        }
+        else if (val instanceof List) {
+            return createModelFromList((List<?>) val);
+        } else if (val instanceof Number || val instanceof Boolean) {
+            return new Constant<>(val);
         }
         System.out.println("provide mapper -> none of the instanceOf matched with val");
-        return null;
+         return null;
+    }
+
+    private Transformation createModelFromList(List<?> list) {
+
+        ListValue<Object> model = new ListValue<>();
+        list.forEach(v -> model.add(getModel(v)));
+        return model;
     }
 
     private Transformation createModelFromMap(Map<?,?> map)

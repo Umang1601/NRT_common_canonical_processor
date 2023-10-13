@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -27,77 +28,84 @@ public class ConfigurationLoader {
     //@Autowired
     //private ApplicationLogger appLogger;
 
+    @Autowired
     MeterRegistry meterrRegistry;
 
-//    @Value("${activeConfigurations}")
+    //    @Value("${activeConfigurations}")
     private String activeConfigurations = "CanonicalSampleEntity";
     @Value("${db.collection.version:}")
     private String dbCollectionVersion;
 
-    public Map<String, ProcessorConfig> load() throws ClassNotFoundException{
+
+    public Map<String, ProcessorConfig> load() throws ClassNotFoundException {
         Map<String, ProcessorConfig> configurations = new HashMap<>();
+        System.out.println("Within load method");
 
-        Environment env = context.getEnvironment();
-        for(String configName : activeConfigurations.split(","))
-        {
-            configName = configName.trim();
-            String topic = env.getProperty(configName + ".topic");
-            String collection = env.getProperty(configName + ".collection");
-            String[] keys = getKeys(env, configName);
-            MappingModel model = getMappingModel(env, configName);
-            DefaultProcessor processor = getProcessor(env, configName);
+        String topic = "sample.entity.processing.topic";
+        String collectionName = "Policy";
+        String mapperFile = "policy-mapper.yaml";
+        String[] keys = new String[]{"_id"};
+        String processorName = "prama.ai.canonical.processor.DefaultProcessor";
+        // Environment env = context.getEnvironment();
 
-            ProcessorConfig configuration = new ProcessorConfig(configName, topic, collection,  processor, model, keys );
+        String configName = activeConfigurations.trim();
+        System.out.println("Configname " + configName);
+        //String topic = env.getProperty(configName + ".topic");
+        System.out.println("topic name :  " + topic);
 
-            configurations.put(topic, configuration);
+        //String collection = env.getProperty(configName + ".collection");
+        System.out.println("collection name %s" + collectionName);
 
-        }
+        //String[] keys = getKeys(env, configName);
+        System.out.println("Keys are %s " + keys);
+
+        MappingModel model = getMappingModel(mapperFile, configName);
+        DefaultProcessor processor = getProcessor(processorName, configName);
+
+        ProcessorConfig configuration = new ProcessorConfig(configName, topic, collectionName, processor, model, keys);
+
+        configurations.put(topic, configuration);
 
         return configurations;
     }
 
-    private String[] getKeys(Environment env, String configName)
-    {
+    private String[] getKeys(Environment env, String configName) {
         String[] keys = env.getProperty(configName + ".keys").split((","));
-        for(int i =0; i< keys.length; i++)
-        {
+        for (int i = 0; i < keys.length; i++) {
             keys[i] = keys[i].trim();
         }
 
         return keys;
     }
 
-    private MappingModel getMappingModel(Environment env, String configName)
-    {
-        String mapperFile = env.getProperty((configName + ".mapper"));
+    private MappingModel getMappingModel(String mapperFile, String configName) {
+
+        // String mapperFile = env.getProperty((configName + ".mapper"));
+
+        System.out.println("within mapping model method and mapper file %s" + mapperFile);
         // not yet set in config, currently hardcoded to send as true
         // boolean allowNulls = !"true".equals(env.getProperty(configName + ".removeNulls"));
-        if(mapperFile != null)
-        {
+        if (mapperFile != null) {
             InputStream resource = getClass().getClassLoader().getResourceAsStream(mapperFile);
 
-            ModelBuilder builder = new ModelBuilder(configName, resource, true);
+            ModelBuilder builder = new ModelBuilder(configName, resource, false);
 
             return builder.build();
         }
         return null;
     }
 
-    private DefaultProcessor getProcessor(Environment env, String configName) throws ClassNotFoundException
-    {
-        String processorClass = env.getProperty(configName + ".processor");
-        return createProcessor(processorClass);
+    private DefaultProcessor getProcessor(String processorName, String configName) throws ClassNotFoundException {
+        //String processorClass = env.getProperty(configName + ".processor");
+        return createProcessor(processorName);
     }
 
-    private DefaultProcessor createProcessor(String processorClass) throws ClassNotFoundException
-    {
+    private DefaultProcessor createProcessor(String processorClass) throws ClassNotFoundException {
         DefaultProcessor processor;
-        if(processorClass != null && !processorClass.isEmpty())
-        {
+        if (processorClass != null && !processorClass.isEmpty()) {
             processor = (DefaultProcessor) context.getBean(Class.forName(processorClass));
             log.info("Found Custome processor " + processorClass);
-        }
-        else {
+        } else {
             processor = context.getBean("defaultProcessor", DefaultProcessor.class);
         }
 

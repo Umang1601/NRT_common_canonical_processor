@@ -1,6 +1,8 @@
 package prama.ai.canonical.config;
 
+import lombok.Data;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 import prama.ai.canonical.processor.DefaultProcessor;
 import prama.ai.mapper.model.MappingModel;
 
@@ -21,6 +23,7 @@ public  class ProcessorConfig {
 
     public ProcessorConfig(String name, String topic, String collection,
                            DefaultProcessor processor, MappingModel model, String[] keys) {
+        System.out.println("In ProcessorConfig Constructor");
         this.name = name;
         this.topic = topic;
         this.collection = collection;
