@@ -10,13 +10,13 @@
     "app.mongodbUrl": "mongodb://localhost:27017",
 
 
-    "activeConfigurations": "CanonicalSampleEntity",
+    "activeConfigurations": "CanonicalPolicyEntity",
 
-    "CanonicalSampleEntity.topic": "sample.entity.processing.topic",
-    "CanonicalSampleEntity.collection": "Policy",
-    "CanonicalSampleEntity.mapper": "mapper/policy-mapper.yaml",
-    "CanonicalSampleEntity.keys": "_id",
-    "CanonicalSampleEntity.processor": "prama.ai.canonical.processor.DefaultProcessor",
+    "CanonicalPolicyEntity.topic": "sample.entity.processing.topic",
+    "CanonicalPolicyEntity.collection": "Policy",
+    "CanonicalPolicyEntity.mapper": "policy-mapper.yaml",
+    "CanonicalPolicyEntity.keys": "_id",
+    "CanonicalPolicyEntity.processor": "prama.ai.canonical.processor.DefaultProcessor",
 
     "kafka.auto.offset.reset" :"earliest",
     "kafka.enable.auto.commit" :"true",

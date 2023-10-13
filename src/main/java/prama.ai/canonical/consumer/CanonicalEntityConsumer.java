@@ -7,7 +7,9 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -18,14 +20,18 @@ import prama.ai.canonical.config.ProcessorConfig;
 import prama.ai.canonical.processor.DefaultProcessor;
 import prama.ai.canonical.util.GenericRecordUtil;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.DependsOn;
+
 
 @Component
 @Slf4j
+//@DependsOn("customProcessorsConfig")
 public class CanonicalEntityConsumer {
 
-  //  private Map<String, Configuration> configurations = new HashMap<>();
+    private Map<String, Configuration> configurations = new HashMap<>();
 
     //@Value("${activeConfigurations}")
     private String activeConfigurations = "CanonicalSampleEntity";
@@ -46,16 +52,6 @@ public class CanonicalEntityConsumer {
 
 //	@Autowired
 //	private MessageProcessor processor;
-
-//	@PostConstruct
-//	public void afterPropertiesSet() {
-//		for (String conf : activeConfigurations.split(",")) {
-//			Environment env = context.getEnvironment();
-//			String topic = env.getProperty(conf + ".rawTopic");
-//			configurations.put(topic, new Configuration(env, conf, meterRegistry));
-//		}
-//		configurations = Map.copyOf(configurations);
-//	}
 
     //@KafkaListener(topics="#{'${inputTopics}'.split(',')",groupId="${app.kafkaApplicationId}")
    @KafkaListener(topics="sample.entity.raw.topic", groupId ="NRT-common-raw-consumer-app")

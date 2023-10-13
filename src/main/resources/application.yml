@@ -1,0 +1,7 @@
+activeConfigurations: CanonicalPolicyEntity
+CanonicalPolicyEntity:
+  topic :  sample.entity.processing.topic
+  collection : Policy
+  mapper : policy-mapper.yaml
+  keys : _id
+  processor :  prama.ai.canonical.processor.DefaultProcessor

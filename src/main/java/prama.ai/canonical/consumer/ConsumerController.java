@@ -8,7 +8,6 @@
 //import prama.ai.canonical.config.ProcessorConfig;
 //import prama.ai.canonical.processor.DefaultProcessor;
 //
-//import java.lang.module.Configuration;
 //import java.util.Map;
 //
 //@RestController
@@ -16,21 +15,18 @@
 //public class ConsumerController {
 //
 //    @Autowired
-//    DefaultProcessor processor;
-//
-//    @Autowired
 //    ConfigurationLoader loader;
 //
 //    @GetMapping("/consumer")
 //    public String getConsumer() {
+//
 //        System.out.println("Consumer ");
 //        String id = "123";
 //        String collection = "Policy";
-//        Map<String, Object> rawEntities = processor.getRawEntities(id, collection);
-//        System.out.println("Raw Entities received %s " + rawEntities);
 //        String topic = "sample.entity.processing.topic";
 //        Map<String, ProcessorConfig> configurations;
 //        ProcessorConfig config = null;
+//
 //        try {
 //            configurations = loader.load();
 //            config = configurations.get(topic);
@@ -39,6 +35,11 @@
 //        {
 //            System.out.println("Received Exception");
 //        }
+//        DefaultProcessor processor = config.getProcessor();
+//        Map<String, Object> rawEntities = processor.getRawEntities(id, collection);
+//        System.out.println("Raw Entities received %s " + rawEntities);
+//
+//
 //        processor.process(config, rawEntities, collection);
 //        return "Success";
 //    }

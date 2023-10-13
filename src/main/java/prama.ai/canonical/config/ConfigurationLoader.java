@@ -14,6 +14,7 @@ import prama.ai.mapper.builder.ModelBuilder;
 import prama.ai.mapper.model.MappingModel;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class ConfigurationLoader {
     MeterRegistry meterrRegistry;
 
     //    @Value("${activeConfigurations}")
-    private String activeConfigurations = "CanonicalSampleEntity";
+    private String activeConfigurations = "CanonicalPolicyEntity";
     @Value("${db.collection.version:}")
     private String dbCollectionVersion;
 
@@ -41,23 +42,22 @@ public class ConfigurationLoader {
         Map<String, ProcessorConfig> configurations = new HashMap<>();
         System.out.println("Within load method");
 
-        String topic = "sample.entity.processing.topic";
-        String collectionName = "Policy";
-        String mapperFile = "policy-mapper.yaml";
-        String[] keys = new String[]{"_id"};
-        String processorName = "prama.ai.canonical.processor.DefaultProcessor";
-        // Environment env = context.getEnvironment();
-
         String configName = activeConfigurations.trim();
         System.out.println("Configname " + configName);
-        //String topic = env.getProperty(configName + ".topic");
+        Environment env = context.getEnvironment();
+        String topic = env.getProperty(configName + ".topic");
         System.out.println("topic name :  " + topic);
 
-        //String collection = env.getProperty(configName + ".collection");
+        String collectionName = env.getProperty(configName + ".collection");
         System.out.println("collection name %s" + collectionName);
 
-        //String[] keys = getKeys(env, configName);
-        System.out.println("Keys are %s " + keys);
+        String[] keys = getKeys(env, configName);
+        System.out.println("Keys are %s " + Arrays.toString(keys));
+
+        String mapperFile = env.getProperty(configName + ".mapper");
+        String processorName = env.getProperty(configName + ".processor");
+
+        System.out.println("processor name " + processorName);
 
         MappingModel model = getMappingModel(mapperFile, configName);
         DefaultProcessor processor = getProcessor(processorName, configName);
@@ -104,7 +104,7 @@ public class ConfigurationLoader {
         DefaultProcessor processor;
         if (processorClass != null && !processorClass.isEmpty()) {
             processor = (DefaultProcessor) context.getBean(Class.forName(processorClass));
-            log.info("Found Custome processor " + processorClass);
+            log.info("Found Custom processor " + processorClass);
         } else {
             processor = context.getBean("defaultProcessor", DefaultProcessor.class);
         }
